@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Live Camera Watermark Detection Web App</title>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="header">Live Camera Watermark Detection Web App</h1>
+      <div class="row">
+        <!-- make this open camera and take picture -->
+
+        <div class="col-md-6">
+          <video id="videoElement" width="400" height="300" autoplay></video>
+          <button id="captureButton" class="btn btn-primary">
+            Capture Image
+          </button>
+        </div>
+        <div class="col-md-6">
+          <div id="resultContainer"></div>
+        </div>
+      </div>
+      <div id="resultHeading"></div>
+      <canvas id="canvas" style="display: none"></canvas>
+    </div>
+
+    <!-- </div> -->
+
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2023 Watermark Detection Web App.</p>
+        <p>made by Hamza Shaukat</p>
+      </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

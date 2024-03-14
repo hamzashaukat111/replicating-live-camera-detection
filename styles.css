@@ -1,0 +1,61 @@
+.container {
+  margin-top: 20px;
+}
+
+.header {
+  margin-bottom: 30px;
+}
+
+.result-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.prediction {
+  width: 48%;
+  padding: 10px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+}
+
+.tag-name {
+  font-weight: bold;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.probability {
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.percentage-bar {
+  background-color: #e9ecef;
+  height: 20px;
+  border-radius: 5px;
+}
+
+.percentage {
+  height: 100%;
+  border-radius: 5px;
+  background-color: #007bff;
+}
+
+.result-heading {
+  font-size: 24px;
+  margin-top: 30px;
+}
+
+.uploaded-image {
+  max-width: 300px;
+  margin-top: 20px;
+}
+.footer {
+  background-color: #f8f9fa;
+  padding: 20px 0;
+  text-align: center;
+  color: #555;
+  font-size: 14px;
+}
