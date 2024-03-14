@@ -32,76 +32,43 @@ $(document).ready(function () {
 
   function processImage(formData) {
     $.ajax({
-      url: "https://cvwatermark-prediction.cognitiveservices.azure.com/customvision/v3.0/Prediction/734afe81-8fa0-45d9-8bc5-81d075b50746/classify/iterations/Iteration1/image",
+      url: "https://cv-instance-analyseimg-northeur.cognitiveservices.azure.com/computervision/imageanalysis:analyze?api-version=2024-02-01&features=people&model-version=latest&language=en&gender-neutral-caption=False",
       type: "POST",
-      data: formData,
-      processData: false,
-      contentType: false,
+      data: JSON.stringify({
+        url: "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/sample.jpg",
+      }),
+      contentType: "application/json",
       headers: {
-        "Prediction-Key": "5e19fdcca31a48878e82eb0b7b226244",
+        "Ocp-Apim-Subscription-Key": "169ba26709814440839c99da449b5421",
       },
+
+      //   now success etc works
       success: function (response) {
-        var predictions = response.predictions;
-        var resultContainer = document.getElementById("resultContainer");
-        var resultHeading = document.getElementById("resultHeading");
-        resultContainer.innerHTML = "";
-        resultHeading.innerHTML = "";
+        var peopleResult = response.peopleResult.values;
+        var highestConfidence = 0;
 
-        if (predictions.length > 0) {
-          var watermarkProbability = 0;
-          var noWatermarkProbability = 0;
-          for (var i = 0; i < predictions.length; i++) {
-            var prediction = predictions[i];
-            if (prediction.tagName === "Watermark") {
-              watermarkProbability = prediction.probability;
-            } else if (prediction.tagName === "NoWatermark") {
-              noWatermarkProbability = prediction.probability;
-            }
+        // Loop through the peopleResult array to find the highest confidence
+        for (var i = 0; i < peopleResult.length; i++) {
+          var person = peopleResult[i];
+          if (person.confidence > highestConfidence) {
+            highestConfidence = person.confidence;
           }
+        }
 
-          var result = '<div class="result-container">';
-          result += '<div class="prediction">';
-          result += '<p class="tag-name">Watermark</p>';
-          result += '<div class="percentage-bar">';
-          result +=
-            '<div class="percentage" style="width: ' +
-            watermarkProbability * 100 +
-            '%;"></div>';
-          result += "</div>";
-          result +=
-            '<p class="probability">' +
-            (watermarkProbability * 100).toFixed(2) +
-            "%</p>";
-          result += "</div>";
-
-          result += '<div class="prediction">';
-          result += '<p class="tag-name">No Watermark</p>';
-          result += '<div class="percentage-bar">';
-          result +=
-            '<div class="percentage" style="width: ' +
-            noWatermarkProbability * 100 +
-            '%;"></div>';
-          result += "</div>";
-          result +=
-            '<p class="probability">' +
-            (noWatermarkProbability * 100).toFixed(2) +
-            "%</p>";
-          result += "</div>";
-          result += "</div>";
-
-          resultContainer.innerHTML = result;
-
-          if (watermarkProbability > noWatermarkProbability) {
-            resultHeading.innerHTML =
-              '<h2 class="result-heading">This Video contains a watermark</h2>';
-          } else {
-            resultHeading.innerHTML =
-              '<h2 class="result-heading">This Video does not contain a watermark</h2>';
-          }
+        // Check if the highest confidence is greater than 0.7
+        if (highestConfidence > 0.7) {
+          // Display message indicating the presence of a person
+          var resultHeading = document.getElementById("resultHeading");
+          resultHeading.innerHTML =
+            '<h2 class="result-heading">This video contains a live person</h2>';
         } else {
-          resultContainer.innerHTML = "<p>No predictions found.</p>";
+          // Display message indicating no person detected or confidence too low
+          var resultHeading = document.getElementById("resultHeading");
+          resultHeading.innerHTML =
+            '<h2 class="result-heading">No live person detected in the video</h2>';
         }
       },
+
       error: function () {
         var resultContainer = document.getElementById("resultContainer");
         var resultHeading = document.getElementById("resultHeading");
