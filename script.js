@@ -20,7 +20,6 @@ $(document).ready(function () {
     formData.append("image", fileInput.files[0]);
     processImage(formData);
   });
-
   captureButton.addEventListener("click", function () {
     context.drawImage(video, 0, 0, 400, 300);
     canvas.toBlob(function (blob) {
@@ -32,15 +31,34 @@ $(document).ready(function () {
 
   function processImage(formData) {
     $.ajax({
-      url: "https://cv-instance-analyseimg-northeur.cognitiveservices.azure.com/computervision/imageanalysis:analyze?api-version=2024-02-01&features=people&model-version=latest&language=en&gender-neutral-caption=False",
+      url: "https://cv-instance-analyseimg-northeur.cognitiveservices.azure.com/computervision/imageanalysis?api-version=2024-02-01&features=people",
       type: "POST",
-      data: JSON.stringify({
-        url: "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/sample.jpg",
-      }),
-      contentType: "application/json",
+      data: formData,
+      processData: false, // Don't process the data
+      contentType: false, // Don't set content type
       headers: {
         "Ocp-Apim-Subscription-Key": "169ba26709814440839c99da449b5421",
       },
+      //   captureButton.addEventListener("click", function () {
+      //     context.drawImage(video, 0, 0, 400, 300);
+      //     canvas.toBlob(function (blob) {
+      //       var formData = new FormData();
+      //       formData.append("image", blob);
+      //       processImage(formData);
+      //     });
+      //   });
+
+      //   function processImage(formData) {
+      //     $.ajax({
+      //       url: "https://cv-instance-analyseimg-northeur.cognitiveservices.azure.com/computervision/imageanalysis:analyze?api-version=2024-02-01&features=people&model-version=latest&language=en&gender-neutral-caption=False",
+      //       type: "POST",
+      //       data: JSON.stringify({
+      //         url: "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/sample.jpg",
+      //       }),
+      //       contentType: "application/json",
+      //       headers: {
+      //         "Ocp-Apim-Subscription-Key": "169ba26709814440839c99da449b5421",
+      //       },
 
       //   now success etc works
       success: function (response) {
