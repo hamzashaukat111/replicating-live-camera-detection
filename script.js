@@ -22,32 +22,35 @@ $(document).ready(function () {
   });
 
   captureButton.addEventListener("click", function () {
-    context.drawImage(video, 0, 0, 400, 300);
+    context.drawImage(video, 0, 0, 270, 150);
     canvas.toBlob(function (blob) {
-      var formData = new FormData();
-      formData.append("image", blob);
-      processImage(formData);
+      // var formData = new FormData();
+      // formData.append("image", blob);
+      processImage(blob);
     });
   });
 
-  function processImage(formData) {
+  function processImage(blob) {
     $.ajax({
       url: "https://cv-instance-analyseimg-northeur.cognitiveservices.azure.com/computervision/imageanalysis:analyze?api-version=2024-02-01&features=people&model-version=latest&language=en&gender-neutral-caption=False",
       type: "POST",
-      data: JSON.stringify({
-        url: "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/sample.jpg",
-      }),
-      //   processData: false,
+      processData: false,
+      data: blob,
+      // data: JSON.stringify({
+      //   url: "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/vision/azure-ai-vision-imageanalysis/src/samples/java/com/azure/ai/vision/imageanalysis/sample.jpg",
+      // }),
       //   contentType: false,
       //   data: formData,
-      //   contentType: "application/octet-stream",
-      contentType: "application/json",
+      // contentType: "application/json",
+      contentType: "application/octet-stream",
+
       headers: {
         "Ocp-Apim-Subscription-Key": "169ba26709814440839c99da449b5421",
       },
 
       //   now success etc works
       success: function (response) {
+        console.log("Response: ", response);
         var peopleResult = response.peopleResult.values;
         var highestConfidence = 0;
 
